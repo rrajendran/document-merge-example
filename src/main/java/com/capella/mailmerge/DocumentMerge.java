@@ -6,11 +6,7 @@ import org.apache.poi.hwpf.usermodel.Paragraph;
 import org.apache.poi.hwpf.usermodel.Range;
 import org.apache.poi.hwpf.usermodel.Section;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Map;
 
 /**
@@ -27,9 +23,10 @@ public class DocumentMerge {
      */
     public String merge(String sourceDocument, Map<String,String> fieldValueMap) throws IOException {
         InputStream inputStream = null;
+        String mergDocPath = null;
         try {
             inputStream = new FileInputStream(sourceDocument);
-            return merge(inputStream, fieldValueMap, null);
+            mergDocPath = merge(inputStream, fieldValueMap, null);
 
         } catch(Exception ex) {
            ex.printStackTrace();
@@ -39,7 +36,7 @@ public class DocumentMerge {
             }
         }
 
-        return null;
+        return mergDocPath;
     }
 
     /**
@@ -87,7 +84,9 @@ public class DocumentMerge {
             doc.write(out);
         }
         finally{
-            out.close();
+            if (out != null) {
+                out.close();
+            }
         }
         return filePath;
     }
