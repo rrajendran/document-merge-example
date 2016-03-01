@@ -29,7 +29,7 @@ public class DocumentMerge {
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(sourceDocument);
-            return merge(inputStream, fieldValueMap);
+            return merge(inputStream, fieldValueMap, null);
 
         } catch(Exception ex) {
            ex.printStackTrace();
@@ -46,13 +46,14 @@ public class DocumentMerge {
      *
      * @param inputStream
      * @param fieldValueMap
+     * @param resultFileName
      * @return
      * @throws IOException
      */
-    public String merge(InputStream inputStream, Map<String, String> fieldValueMap) throws IOException {
+    public String merge(InputStream inputStream, Map<String, String> fieldValueMap, String resultFileName) throws IOException {
         HWPFDocument doc = new HWPFDocument(inputStream);
         doc = replaceText(doc, fieldValueMap);
-        return saveWord("target/sample.doc", doc);
+        return saveWord(resultFileName, doc);
     }
 
     private HWPFDocument replaceText(HWPFDocument doc, Map<String,String> fieldValueMap){
