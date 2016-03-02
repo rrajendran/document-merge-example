@@ -25,12 +25,12 @@ public class DocumentMergeTest {
         documentMerge.merge(resourceAsStream, (Map<String, String>) map, "target/tables.doc");
     }
 
-    @Test
+    /*@Test
     public void testMergeImageDoc() throws IOException {
         Map<String, String> map = ImmutableMap.<String, String>builder().
                 put("$name", "Ramesh Rajendran").
                 build();
         InputStream resourceAsStream = DocumentMergeTest.class.getClassLoader().getResourceAsStream("Images.doc");
         documentMerge.merge(resourceAsStream, (Map<String, String>) map, "target/Images.doc");
-    }
+    }*/
 }
