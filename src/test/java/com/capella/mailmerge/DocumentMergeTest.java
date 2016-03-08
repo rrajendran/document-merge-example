@@ -25,6 +25,19 @@ public class DocumentMergeTest {
         documentMerge.merge(resourceAsStream, (Map<String, String>) map, "target/tables.doc");
     }
 
+
+    @Test
+    public void testdocxMerge() throws IOException {
+        Map<String, String> map = ImmutableMap.<String, String>builder().
+                put("$firstName", "Ramesh Rajendran").
+                put("$dob", "01 Jan, 1970").
+                build();
+        InputStream resourceAsStream = DocumentMergeTest.class.getClassLoader().getResourceAsStream("tables.docx");
+        String merge = docxMerge.merge(resourceAsStream, (Map<String, String>) map, "target/tables.docx");
+
+        System.out.println("saved at  " + merge);
+    }
+
     /*@Test
     public void testMergeImageDoc() throws IOException {
         Map<String, String> map = ImmutableMap.<String, String>builder().
