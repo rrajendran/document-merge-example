@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class DocumentMergeTest {
     DocumentMerge documentMerge = new DocumentMerge();
-
+    DocxMerge docxMerge = new DocxMerge();
     @Test
     public void testMerge() throws IOException {
         Map<String, String> map = ImmutableMap.<String, String>builder().
