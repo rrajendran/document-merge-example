@@ -1,5 +1,6 @@
 package com.capella.mailmerge;
 
+import com.google.common.base.Preconditions;
 import org.apache.poi.xwpf.usermodel.BodyElementType;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -26,12 +27,19 @@ import java.util.Map;
 public class DocxMerge {
 
 
-
-
+    /**
+     * Document merge docx
+     * @param inputStream
+     * @param fieldValueMap
+     * @param resultFileName
+     * @return
+     * @throws IOException
+     */
     public String merge(InputStream inputStream, Map<String,String> fieldValueMap, String resultFileName) throws IOException {
 
         String mergDocPath = null;
         try {
+            Preconditions.checkNotNull(inputStream);
             XWPFDocument document = new XWPFDocument(inputStream);
             fieldValueMap.forEach((k,v) ->  replacePOI(document, k, v));
             mergDocPath = saveWord(resultFileName, document);
