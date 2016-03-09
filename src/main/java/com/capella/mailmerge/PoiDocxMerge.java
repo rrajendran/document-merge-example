@@ -24,7 +24,7 @@ import java.util.Map;
  *
  * @author Ramesh Rajendran
  */
-public class DocxMerge {
+public class PoiDocxMerge {
 
 
     /**
@@ -41,6 +41,8 @@ public class DocxMerge {
         try {
             Preconditions.checkNotNull(inputStream);
             XWPFDocument document = new XWPFDocument(inputStream);
+
+
             fieldValueMap.forEach((k,v) ->  replacePOI(document, k, v));
             mergDocPath = saveWord(resultFileName, document);
 
@@ -56,7 +58,6 @@ public class DocxMerge {
     }
 
     private XWPFDocument replacePOI(XWPFDocument doc, String placeHolder, String replaceText){
-        System.out.println(placeHolder + "," + replaceText);
         // REPLACE ALL HEADERS
         for (XWPFHeader header : doc.getHeaderList())
             replaceAllBodyElements(header.getBodyElements(), placeHolder, replaceText);
