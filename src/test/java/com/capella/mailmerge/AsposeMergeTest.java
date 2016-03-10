@@ -12,8 +12,14 @@ import java.io.InputStream;
 public class AsposeMergeTest {
     @Test
     public void testMerge() throws Exception {
-        InputStream inputStream = PoiDocxMergeTest.class.getClassLoader().getResourceAsStream("Template.doc");
-        MailMergeFormFields.merge(inputStream);
+        InputStream inputStream = PoiDocxMergeTest.class.getClassLoader().getResourceAsStream("tables.docx");
+
+        String[] fieldNames = new String[] {"LastName", "FirstName", "FaxNumber", "PhoneNumber",
+                "Subject", "Body", "Urgent", "ForReview", "PleaseComment"};
+        Object[] fieldValues = new Object[] {"Josh", "Jenny", "123456789", "", "Hello",
+                "Test message 1", true, false, true};
+
+        AsposeMailMerge.merge(inputStream,fieldNames,fieldValues);
     }
 
 }

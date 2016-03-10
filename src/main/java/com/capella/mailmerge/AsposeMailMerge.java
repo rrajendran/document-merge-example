@@ -13,12 +13,12 @@ import java.io.InputStream;
 /**
  * This sample shows how to insert check boxes and text input form fields during mail merge into a document.
  */
-public class MailMergeFormFields
+public class AsposeMailMerge
 {
     /**
      * The main entry point for the application.
      */
-    public static void merge(InputStream inputStream) throws Exception
+    public static void merge(InputStream inputStream, String[] fieldNames ,  Object[] fieldValues) throws Exception
     {
         // The path to the documents directory.
 
@@ -29,10 +29,7 @@ public class MailMergeFormFields
         doc.getMailMerge().setFieldMergingCallback(new HandleMergeField());
 
         // This is the data for mail merge.
-        String[] fieldNames = new String[] {"RecipientName", "SenderName", "FaxNumber", "PhoneNumber",
-            "Subject", "Body", "Urgent", "ForReview", "PleaseComment"};
-        Object[] fieldValues = new Object[] {"Josh", "Jenny", "123456789", "", "Hello",
-            "Test message 1", true, false, true};
+
 
         // Execute the mail merge.
         doc.getMailMerge().execute(fieldNames, fieldValues);

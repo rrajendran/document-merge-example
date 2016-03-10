@@ -5,8 +5,6 @@ import org.docx4j.model.fields.merge.MailMerger.OutputField;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +14,9 @@ import java.util.Map;
  * See http://webapp.docx4java.org/OnlineDemo/ecma376/WordML/MERGEFIELD.html
  *
  */
-public class FieldsMailMerge {
+public class Docx4JavaMailMerge {
 
-	public static void merge(InputStream inputStream) throws Exception {
+	public static void merge(InputStream inputStream, List<Map<DataFieldName, String>> data ) throws Exception {
 
 		// Whether to create a single output docx, or a docx per Map of input data.
 		// Note: If you only have 1 instance of input data, then you can just invoke performMerge
@@ -26,26 +24,7 @@ public class FieldsMailMerge {
 		
 		WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(inputStream);
 		
-		List<Map<DataFieldName, String>> data = new ArrayList<Map<DataFieldName, String>>();
 
-		// Instance 1
-		Map<DataFieldName, String> map = new HashMap<DataFieldName, String>();
-		map.put( new DataFieldName("KundenNAme"), "Daffy duck");
-		map.put( new DataFieldName("Kundenname"), "Plutext");
-		map.put(new DataFieldName("Kundenstrasse"), "Bourke Street");
-		// To get dates right, make sure you have docx4j property docx4j.Fields.Dates.DateFormatInferencer.USA
-		// set to true or false as appropriate.  It defaults to non-US.
-		map.put(new DataFieldName("yourdate"), "15/4/2013");  
-		map.put(new DataFieldName("yournumber"), "2456800");
-		data.add(map);
-				
-		// Instance 2
-		map = new HashMap<DataFieldName, String>();
-		map.put( new DataFieldName("Kundenname"), "Jason");
-		map.put(new DataFieldName("Kundenstrasse"), "Collins Street");
-		map.put(new DataFieldName("yourdate"), "12/10/2013");
-		map.put(new DataFieldName("yournumber"), "1234800");
-		data.add(map);		
 		
 		
 		if (mergedOutput) {
@@ -68,7 +47,7 @@ public class FieldsMailMerge {
 			
 //			System.out.println(XmlUtils.marshaltoString(output.getMainDocumentPart().getJaxbElement(), true, true));
 			
-			output.save(new java.io.File("target/docx4java_mail_merge.docx"));
+			output.save(new java.io.File("/media/winshare/docx4java_mail_merge.docx"));
 			
 		} else {
 			// Need to keep the MERGEFIELDs. If you don't, you'd have to clone the docx, and perform the
@@ -78,7 +57,7 @@ public class FieldsMailMerge {
 			int i = 1;
 			for (Map<DataFieldName, String> thismap : data) {
 				org.docx4j.model.fields.merge.MailMerger.performMerge(wordMLPackage, thismap, true);
-				wordMLPackage.save(new java.io.File("target/docx4java_mail_merge.docx"));
+				wordMLPackage.save(new java.io.File("/media/winshare/docx4java_mail_merge.docx"));
 				i++;
 			}			
 		}

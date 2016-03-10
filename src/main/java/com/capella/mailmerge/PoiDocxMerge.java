@@ -7,10 +7,10 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSimpleField;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -93,13 +93,41 @@ public class PoiDocxMerge {
     }
 
     private void replaceParagraph(XWPFParagraph paragraph, String placeHolder, String replaceText) {
-        for (XWPFRun r : paragraph.getRuns()) {
+        CTSimpleField[] fldSimpleArray = paragraph.getCTP().getFldSimpleArray();
+        for (CTSimpleField ctSimpleField : fldSimpleArray) {
+            if(ctSimpleField.getInstr().contains(placeHolder)) {
+                ctSimpleField.setInstr(replaceText);
+            }
+            System.out.println(ctSimpleField.getInstr());
+        }
+
+        paragraph.getCTP().setFldSimpleArray(fldSimpleArray);
+        /*for (XWPFRun r : paragraph.getRuns()) {
+            if(r instanceof XWPFFieldRun){
+                XWPFFieldRun xwpfFieldRun = (XWPFFieldRun) r;
+
+                CTSimpleField ctField = xwpfFieldRun.getCTField();
+                if(ctField.getInstr().contains(placeHolder)) {
+                    CTText ctText = ctField.addNewR().addNewT();
+                    ctText.setStringValue("<<fieldName>>");
+                    ctField.setFldData(ctText);
+
+                    System.out.println("contains : " + ctField.getInstr() );
+                }
+
+                System.out.println("Text: "+ xwpfFieldRun.getText(xwpfFieldRun.getTextPosition()));
+            }
+
+
+        }*/
+
+       /* for (XWPFRun r : paragraph.getRuns()) {
             String text = r.getText(r.getTextPosition());
             if (text != null && text.contains(placeHolder)) {
                 text = text.replace(placeHolder, replaceText);
                 r.setText(text, 0);
             }
-        }
+        }*/
     }
 
     private String saveWord(String filePath, XWPFDocument doc) throws FileNotFoundException, IOException{
