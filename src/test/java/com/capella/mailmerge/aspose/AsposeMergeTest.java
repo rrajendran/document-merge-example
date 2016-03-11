@@ -1,9 +1,12 @@
 package com.capella.mailmerge.aspose;
 
 import com.capella.mailmerge.poi.PoiDocxMergeTest;
+import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 
 import java.io.InputStream;
+import java.util.Map;
+import java.util.stream.IntStream;
 
 /**
  * Created on : 3/9/16
@@ -11,14 +14,52 @@ import java.io.InputStream;
  * @author Ramesh Rajendran
  */
 public class AsposeMergeTest {
+    private static final String TEMPLATE_DOC = "poi_2010.docx";
+
     @Test
     public void testMerge() throws Exception {
-        InputStream inputStream = PoiDocxMergeTest.class.getClassLoader().getResourceAsStream("tables.docx");
+        System.out.println("**********ASPOSE-MAIL MERGE***************");
+        String[] fieldNames = new String[]{"LastName", "FirstName", "ImageField"};
+        Object[] fieldValues = new Object[]{"Josh", "RenÃ©e", "Mail Merge Demo"};
+        IntStream.range(1, 10).forEach((index) -> {
+            try {
+                long currentMilliseconds = System.currentTimeMillis();
+                InputStream inputStream = PoiDocxMergeTest.class.getClassLoader().getResourceAsStream("aspose.docx");
+                AsposeMailMerge.merge(inputStream, fieldNames, fieldValues);
+                System.out.println("time taken : " + (System.currentTimeMillis() - currentMilliseconds) + " ms");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
-        String[] fieldNames = new String[] {"LastName", "FirstName"};
-        Object[] fieldValues = new Object[] {"Josh", "ÿçèïœœ"};
+    }
 
-        AsposeMailMerge.merge(inputStream,fieldNames,fieldValues);
+
+    @Test
+
+    public void testFindReplace() throws Exception {
+
+
+        Map<String, String> map = ImmutableMap.<String, String>builder().
+                put("$FirstName", "RenÃ©e").
+                put("$LastName", "Mathew").
+                put("$ImageName", "Mail Merge Demo").
+                put("$Date", "12 March 2016").
+                build();
+        InputStream resourceAsStream = PoiDocxMergeTest.class.getClassLoader().getResourceAsStream(TEMPLATE_DOC);
+
+        System.out.println("**********ASPOSE-FIND/REPLACE***************");
+        IntStream.range(1, 10).forEach((index) -> {
+            try {
+                long currentMilliseconds = System.currentTimeMillis();
+                AsposeMailMerge.findReplace(resourceAsStream, map, "target/findReplace_" + TEMPLATE_DOC);
+                System.out.println("time taken : " + (System.currentTimeMillis() - currentMilliseconds) + " ms");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+
     }
 
 }

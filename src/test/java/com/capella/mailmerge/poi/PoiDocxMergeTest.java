@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 /**
  * Created on : 3/1/16
@@ -13,23 +14,35 @@ import java.util.Map;
  * @author Ramesh Rajendran
  */
 public class PoiDocxMergeTest {
-    public static final String TEMPLATE_DOC = "tables.docx";
+    public static final String TEMPLATE_DOC = "poi_2010.docx";
     private PoiDocxMerge poiDocxMerge = new PoiDocxMerge();
 
     @Test
     public void testdocxMerge() throws IOException {
-        long currentMilliseconds = System.currentTimeMillis();
+        System.out.println("**********POI***************");
+
         Map<String, String> map = ImmutableMap.<String, String>builder().
-                put("Title", "Mr").
-                put("FirstName", "Ramesh").
-                put("LastName", new String("���".getBytes("UTF-8"))).
+                put("$FirstName", "Renée").
+                put("$LastName", "Mathew").
+                put("$ImageName", "Mail Merge Demo").
+                put("$Date", "12 March 2016").
                 build();
-        InputStream resourceAsStream = PoiDocxMergeTest.class.getClassLoader().getResourceAsStream(TEMPLATE_DOC);
 
-        String merge = poiDocxMerge.merge(resourceAsStream, (Map<String, String>) map, "target/" +TEMPLATE_DOC);
+        IntStream.range(1, 10).forEach((index) -> {
+            try {
 
-        System.out.println("time taken : " + (System.currentTimeMillis() - currentMilliseconds) + "ms");
-        System.out.println("saved at  " + merge);
+                InputStream resourceAsStream = PoiDocxMergeTest.class.getClassLoader().getResourceAsStream(TEMPLATE_DOC);
+                long currentMilliseconds = System.currentTimeMillis();
+
+                String merge = poiDocxMerge.merge(resourceAsStream, map, "target/" + TEMPLATE_DOC);
+
+                System.out.println("time taken : " + (System.currentTimeMillis() - currentMilliseconds) + " ms");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+
     }
 
 }

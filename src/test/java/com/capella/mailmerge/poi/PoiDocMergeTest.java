@@ -1,6 +1,7 @@
 package com.capella.mailmerge.poi;
 
 import com.google.common.collect.ImmutableMap;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -12,15 +13,17 @@ import java.util.Map;
  *
  * @author Ramesh Rajendran
  */
+@Ignore
 public class PoiDocMergeTest {
     PoiDocMerge poiDocMerge = new PoiDocMerge();
     @Test
     public void testMerge() throws IOException {
         Map<String, String> map = ImmutableMap.<String, String>builder().
-                put("$firstName", "Renée").
-                put("$dob", "01 Jan, 1970").
+                put("$FirstName", "Renée").
+                put("$LastName", "Mathew").
+                put("$ImageName", "Mail Merge Demo").
                 build();
-        InputStream resourceAsStream = PoiDocMergeTest.class.getClassLoader().getResourceAsStream("tables.doc");
+        InputStream resourceAsStream = PoiDocMergeTest.class.getClassLoader().getResourceAsStream("poi.doc");
         poiDocMerge.merge(resourceAsStream, map, "target/poi_tables.doc");
     }
 
