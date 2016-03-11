@@ -1,4 +1,4 @@
-package com.capella.mailmerge;
+package com.capella.mailmerge.docx4java;
 
 import org.docx4j.model.fields.merge.DataFieldName;
 import org.docx4j.model.fields.merge.MailMerger.OutputField;

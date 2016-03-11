@@ -1,5 +1,6 @@
-package com.capella.mailmerge;
+package com.capella.mailmerge.docx4java;
 
+import com.capella.mailmerge.poi.PoiDocxMergeTest;
 import org.docx4j.model.fields.merge.DataFieldName;
 import org.junit.Test;
 

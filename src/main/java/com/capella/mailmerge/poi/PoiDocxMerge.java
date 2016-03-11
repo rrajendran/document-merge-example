@@ -1,4 +1,4 @@
-package com.capella.mailmerge;
+package com.capella.mailmerge.poi;
 
 import com.google.common.base.Preconditions;
 import org.apache.poi.xwpf.usermodel.BodyElementType;
@@ -12,7 +12,6 @@ import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSimpleField;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -130,7 +129,7 @@ public class PoiDocxMerge {
         }*/
     }
 
-    private String saveWord(String filePath, XWPFDocument doc) throws FileNotFoundException, IOException{
+    private String saveWord(String filePath, XWPFDocument doc) throws IOException {
         FileOutputStream out = null;
         try{
             out = new FileOutputStream(filePath);

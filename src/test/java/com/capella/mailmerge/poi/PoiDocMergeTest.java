@@ -1,4 +1,4 @@
-package com.capella.mailmerge;
+package com.capella.mailmerge.poi;
 
 import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
@@ -21,7 +21,7 @@ public class PoiDocMergeTest {
                 put("$dob", "01 Jan, 1970").
                 build();
         InputStream resourceAsStream = PoiDocMergeTest.class.getClassLoader().getResourceAsStream("tables.doc");
-        poiDocMerge.merge(resourceAsStream, (Map<String, String>) map, "target/poi_tables.doc");
+        poiDocMerge.merge(resourceAsStream, map, "target/poi_tables.doc");
     }
 
 

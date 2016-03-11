@@ -1,5 +1,6 @@
-package com.capella.mailmerge;
+package com.capella.mailmerge.aspose;
 
+import com.capella.mailmerge.poi.PoiDocxMergeTest;
 import org.junit.Test;
 
 import java.io.InputStream;

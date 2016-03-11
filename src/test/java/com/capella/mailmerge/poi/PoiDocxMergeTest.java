@@ -1,4 +1,4 @@
-package com.capella.mailmerge;
+package com.capella.mailmerge.poi;
 
 import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class PoiDocxMergeTest {
                 put("LastName", "Rajendran").
                 build();
         InputStream resourceAsStream = PoiDocxMergeTest.class.getClassLoader().getResourceAsStream(TEMPLATE_DOC);
-        String merge = poiDocxMerge.merge(resourceAsStream, (Map<String, String>) map, "/media/winshare/" +TEMPLATE_DOC);
+        String merge = poiDocxMerge.merge(resourceAsStream, map, "/media/winshare/" + TEMPLATE_DOC);
         System.out.println("time taken : " + (System.currentTimeMillis() - currentMilliseconds) + "ms");
         System.out.println("saved at  " + merge);
     }

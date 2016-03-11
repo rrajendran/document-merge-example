@@ -1,4 +1,4 @@
-package com.capella.mailmerge;
+package com.capella.mailmerge.aspose;
 
 import com.aspose.words.Document;
 import com.aspose.words.DocumentBuilder;
@@ -42,6 +42,8 @@ public class AsposeMailMerge
 
     private static class HandleMergeField implements IFieldMergingCallback
     {
+        private DocumentBuilder mBuilder;
+
         /**
          * This handler is called for every mail merge field found in the document,
          * for every record found in the data source.
@@ -81,7 +83,5 @@ public class AsposeMailMerge
         {
             // Do nothing.
         }
-
-        private DocumentBuilder mBuilder;
     }
 }

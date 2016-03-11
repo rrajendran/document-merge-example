@@ -1,4 +1,4 @@
-package com.capella.mailmerge;
+package com.capella.mailmerge.poi;
 
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.usermodel.CharacterRun;
@@ -7,7 +7,6 @@ import org.apache.poi.hwpf.usermodel.Range;
 import org.apache.poi.hwpf.usermodel.Section;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +16,19 @@ import java.util.Map;
  * Document Merge - word
  */
 public class PoiDocMerge {
+    private static String saveWord(String filePath, HWPFDocument doc) throws IOException {
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(filePath);
+            doc.write(out);
+        } finally {
+            if (out != null) {
+                out.close();
+            }
+        }
+        return filePath;
+    }
+
     /**
      *
      * @param sourceDocument
@@ -92,18 +104,5 @@ public class PoiDocMerge {
                 }
             }
         }
-    }
-    private static String saveWord(String filePath, HWPFDocument doc) throws FileNotFoundException, IOException{
-        FileOutputStream out = null;
-        try{
-            out = new FileOutputStream(filePath);
-            doc.write(out);
-        }
-        finally{
-            if (out != null) {
-                out.close();
-            }
-        }
-        return filePath;
     }
 }
