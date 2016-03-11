@@ -25,7 +25,7 @@ public class Docx4JavaMailMergeTest {
         // Instance 1
         Map<DataFieldName, String> map = new HashMap<DataFieldName, String>();
         map.put( new DataFieldName("FirstName"), "Daffy duck");
-        map.put( new DataFieldName("LastName"), "Plutext");
+        map.put( new DataFieldName("LastName"),  new String("ÿηθο".getBytes("UTF-8")));
 
         data.add(map);
 

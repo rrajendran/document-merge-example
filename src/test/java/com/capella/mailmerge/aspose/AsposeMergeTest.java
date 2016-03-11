@@ -15,10 +15,8 @@ public class AsposeMergeTest {
     public void testMerge() throws Exception {
         InputStream inputStream = PoiDocxMergeTest.class.getClassLoader().getResourceAsStream("tables.docx");
 
-        String[] fieldNames = new String[] {"LastName", "FirstName", "FaxNumber", "PhoneNumber",
-                "Subject", "Body", "Urgent", "ForReview", "PleaseComment"};
-        Object[] fieldValues = new Object[] {"Josh", "Jenny", "123456789", "", "Hello",
-                "Test message 1", true, false, true};
+        String[] fieldNames = new String[] {"LastName", "FirstName"};
+        Object[] fieldValues = new Object[] {"Josh", "ÿηθο"};
 
         AsposeMailMerge.merge(inputStream,fieldNames,fieldValues);
     }
