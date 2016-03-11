@@ -1,16 +1,8 @@
 package com.capella.mailmerge.poi;
 
 import com.google.common.base.Preconditions;
-import org.apache.poi.xwpf.usermodel.BodyElementType;
-import org.apache.poi.xwpf.usermodel.IBodyElement;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFFooter;
-import org.apache.poi.xwpf.usermodel.XWPFHeader;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.apache.poi.xwpf.usermodel.*;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,15 +18,17 @@ import java.util.Map;
 public class PoiDocxMerge {
 
     private static final String PREFIX = "$";
+
     /**
      * Document merge docx
+     *
      * @param inputStream
      * @param fieldValueMap
      * @param resultFileName
      * @return
      * @throws IOException
      */
-    public String merge(InputStream inputStream, Map<String,String> fieldValueMap, String resultFileName) throws IOException {
+    public String merge(InputStream inputStream, Map<String, String> fieldValueMap, String resultFileName, MergeType mergeType) throws IOException {
 
         String mergDocPath = null;
         try {
@@ -42,13 +36,13 @@ public class PoiDocxMerge {
             XWPFDocument document = new XWPFDocument(inputStream);
 
 
-            fieldValueMap.forEach((k,v) ->  replacePOI(document, k, v));
+            fieldValueMap.forEach((k, v) -> replacePOI(document, k, v, mergeType));
             mergDocPath = saveWord(resultFileName, document);
 
-        } catch(Exception ex) {
-           throw ex;
-        }finally {
-            if(inputStream != null){
+        } catch (Exception ex) {
+            throw ex;
+        } finally {
+            if (inputStream != null) {
                 inputStream.close();
             }
         }
@@ -56,59 +50,72 @@ public class PoiDocxMerge {
         return mergDocPath;
     }
 
-    private XWPFDocument replacePOI(XWPFDocument doc, String placeHolder, String replaceText){
+    private XWPFDocument replacePOI(XWPFDocument doc, String placeHolder, String replaceText, MergeType mergeType) {
         // REPLACE ALL HEADERS
         for (XWPFHeader header : doc.getHeaderList())
-            replaceAllBodyElements(header.getBodyElements(), placeHolder, replaceText);
+            replaceAllBodyElements(header.getBodyElements(), placeHolder, replaceText, mergeType);
 
         // REPLACE ALL FOOTER
-        for(XWPFFooter footer : doc.getFooterList()){
-            replaceAllBodyElements(footer.getBodyElements(), placeHolder, replaceText);
+        for (XWPFFooter footer : doc.getFooterList()) {
+            replaceAllBodyElements(footer.getBodyElements(), placeHolder, replaceText, mergeType);
         }
 
         // REPLACE BODY
-        replaceAllBodyElements(doc.getBodyElements(), placeHolder, replaceText);
+        replaceAllBodyElements(doc.getBodyElements(), placeHolder, replaceText, mergeType);
         return doc;
     }
 
-    private void replaceAllBodyElements(List<IBodyElement> bodyElements, String placeHolder, String replaceText){
+    private void replaceAllBodyElements(List<IBodyElement> bodyElements, String placeHolder, String replaceText, MergeType mergeType) {
         for (IBodyElement bodyElement : bodyElements) {
             if (bodyElement.getElementType().compareTo(BodyElementType.PARAGRAPH) == 0)
-                replaceParagraph((XWPFParagraph) bodyElement, placeHolder, replaceText);
+                replaceParagraph((XWPFParagraph) bodyElement, placeHolder, replaceText, mergeType);
             if (bodyElement.getElementType().compareTo(BodyElementType.TABLE) == 0)
-                replaceTable((XWPFTable) bodyElement, placeHolder, replaceText);
+                replaceTable((XWPFTable) bodyElement, placeHolder, replaceText, mergeType);
         }
     }
 
-    private void replaceTable(XWPFTable table, String placeHolder, String replaceText) {
+    private void replaceTable(XWPFTable table, String placeHolder, String replaceText, MergeType mergeType) {
         for (XWPFTableRow row : table.getRows())
             for (XWPFTableCell cell : row.getTableCells())
                 for (IBodyElement bodyElement : cell.getBodyElements()) {
                     if (bodyElement.getElementType().compareTo(BodyElementType.PARAGRAPH) == 0)
-                        replaceParagraph((XWPFParagraph) bodyElement, placeHolder, replaceText);
+                        replaceParagraph((XWPFParagraph) bodyElement, placeHolder, replaceText, mergeType);
                     if (bodyElement.getElementType().compareTo(BodyElementType.TABLE) == 0)
-                        replaceTable((XWPFTable) bodyElement, placeHolder, replaceText);
+                        replaceTable((XWPFTable) bodyElement, placeHolder, replaceText, mergeType);
                 }
     }
 
-    private void replaceParagraph(XWPFParagraph paragraph, String placeHolder, String replaceText) {
+    private void replaceParagraph(XWPFParagraph paragraph, String placeHolder, String replaceText, MergeType mergeType) {
 
         for (XWPFRun r : paragraph.getRuns()) {
-            String text = r.getText(r.getTextPosition());
-            if (text != null && text.contains(placeHolder)) {
-                text = text.replace(placeHolder, replaceText);
-                r.setText(text, 0);
+
+            if (mergeType.equals(MergeType.MAIL_MERGE)) {
+                for (CTText cttext : r.getCTR().getTArray()) {
+                    if (cttext.getStringValue().contains(placeHolder)) {
+                        CTText ctText = CTText.Factory.newInstance();
+                        ctText.setStringValue(replaceText);
+                        r.getCTR().setTArray(new CTText[]{ctText});
+                    }
+                }
+            } else {
+                String text = r.getText(r.getTextPosition());
+                if (text != null && text.contains(placeHolder)) {
+                    text = text.replace(placeHolder, replaceText);
+                    r.setText(text, 0);
+                }
             }
+
+
         }
+
     }
 
     private String saveWord(String filePath, XWPFDocument doc) throws IOException {
         FileOutputStream out = null;
-        try{
+        try {
             out = new FileOutputStream(filePath);
             doc.write(out);
-        }
-        finally{
+        } finally {
             if (out != null) {
                 out.close();
             }

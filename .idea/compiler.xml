@@ -22,10 +22,17 @@
         <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="document-merge-example" />
+      </profile>
+      <profile default="false" name="Annotation profile for document-merge--example" enabled="true">
+        <sourceOutputDir name="target\generated-sources\annotations" />
+        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="document-merge--example" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="document-merge--example" target="1.8" />
       <module name="document-merge-example" target="1.8" />
     </bytecodeTargetLevel>
   </component>

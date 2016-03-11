@@ -48,7 +48,6 @@ public class AsposeMailMerge {
         // Save the finished document.
         doc.save("target/Aspose_MailMerge_.doc");
 
-        System.out.println("Mail merge performed successfully.");
     }
 
     private static class HandleMergeField implements IFieldMergingCallback {

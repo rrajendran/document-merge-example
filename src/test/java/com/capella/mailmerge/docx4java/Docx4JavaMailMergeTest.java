@@ -1,5 +1,6 @@
 package com.capella.mailmerge.docx4java;
 
+import com.capella.mailmerge.BaseMailMergeTest;
 import com.capella.mailmerge.poi.PoiDocxMergeTest;
 import org.docx4j.model.fields.merge.DataFieldName;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
@@ -18,7 +19,7 @@ import java.util.stream.IntStream;
  *
  * @author Ramesh Rajendran
  */
-public class Docx4JavaMailMergeTest {
+public class Docx4JavaMailMergeTest extends BaseMailMergeTest {
     @Test
     public void testMerge() throws Exception {
         System.out.println("**********DOCX4JAVA***************");
@@ -38,15 +39,13 @@ public class Docx4JavaMailMergeTest {
             try {
 
                 long currentMilliseconds = System.currentTimeMillis();
-                InputStream inputStream = PoiDocxMergeTest.class.getClassLoader().getResourceAsStream("aspose.docx");
+                InputStream inputStream = PoiDocxMergeTest.class.getClassLoader().getResourceAsStream(TEMPLATE_DOC);
                 Docx4JavaMailMerge.merge(inputStream, data);
                 System.out.println("time taken : " + (System.currentTimeMillis() - currentMilliseconds) + " ms");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-
-
     }
 
     @Test
