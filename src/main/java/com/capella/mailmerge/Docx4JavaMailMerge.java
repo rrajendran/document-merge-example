@@ -20,7 +20,7 @@ public class Docx4JavaMailMerge {
 
 		// Whether to create a single output docx, or a docx per Map of input data.
 		// Note: If you only have 1 instance of input data, then you can just invoke performMerge
-		boolean mergedOutput = false;
+		boolean mergedOutput = true;
 		
 		WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(inputStream);
 		
@@ -47,7 +47,7 @@ public class Docx4JavaMailMerge {
 			
 //			System.out.println(XmlUtils.marshaltoString(output.getMainDocumentPart().getJaxbElement(), true, true));
 			
-			output.save(new java.io.File("/media/winshare/docx4java_mail_merge.docx"));
+			output.save(new java.io.File("target/docx4java_mail_merge.docx"));
 			
 		} else {
 			// Need to keep the MERGEFIELDs. If you don't, you'd have to clone the docx, and perform the
@@ -57,7 +57,8 @@ public class Docx4JavaMailMerge {
 			int i = 1;
 			for (Map<DataFieldName, String> thismap : data) {
 				org.docx4j.model.fields.merge.MailMerger.performMerge(wordMLPackage, thismap, true);
-				wordMLPackage.save(new java.io.File("/media/winshare/docx4java_mail_merge.docx"));
+				org.docx4j.model.fields.merge.MailMerger.performMerge(wordMLPackage, thismap, true);
+				wordMLPackage.save(new java.io.File("target/docx4java_mail_merge.docx"));
 				i++;
 			}			
 		}

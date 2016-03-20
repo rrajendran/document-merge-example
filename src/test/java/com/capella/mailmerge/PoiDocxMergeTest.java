@@ -22,10 +22,10 @@ public class PoiDocxMergeTest {
         Map<String, String> map = ImmutableMap.<String, String>builder().
                 put("Title", "Mr").
                 put("FirstName", "Ramesh").
-                put("LastName", "Rajendran").
+                put("LastName", new String("ÿηθο".getBytes("UTF-8"))).
                 build();
         InputStream resourceAsStream = PoiDocxMergeTest.class.getClassLoader().getResourceAsStream(TEMPLATE_DOC);
-        String merge = poiDocxMerge.merge(resourceAsStream, (Map<String, String>) map, "/media/winshare/" +TEMPLATE_DOC);
+        String merge = poiDocxMerge.merge(resourceAsStream, (Map<String, String>) map, "target/" +TEMPLATE_DOC);
         System.out.println("time taken : " + (System.currentTimeMillis() - currentMilliseconds) + "ms");
         System.out.println("saved at  " + merge);
     }

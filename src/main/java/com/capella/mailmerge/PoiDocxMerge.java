@@ -1,15 +1,7 @@
 package com.capella.mailmerge;
 
 import com.google.common.base.Preconditions;
-import org.apache.poi.xwpf.usermodel.BodyElementType;
-import org.apache.poi.xwpf.usermodel.IBodyElement;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFFooter;
-import org.apache.poi.xwpf.usermodel.XWPFHeader;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.apache.poi.xwpf.usermodel.*;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSimpleField;
 
 import java.io.FileNotFoundException;
@@ -93,25 +85,13 @@ public class PoiDocxMerge {
     }
 
     private void replaceParagraph(XWPFParagraph paragraph, String placeHolder, String replaceText) {
-        CTSimpleField[] fldSimpleArray = paragraph.getCTP().getFldSimpleArray();
-        for (CTSimpleField ctSimpleField : fldSimpleArray) {
-            if(ctSimpleField.getInstr().contains(placeHolder)) {
-                ctSimpleField.setInstr(replaceText);
-            }
-            System.out.println(ctSimpleField.getInstr());
-        }
 
-        paragraph.getCTP().setFldSimpleArray(fldSimpleArray);
-        /*for (XWPFRun r : paragraph.getRuns()) {
+        for (XWPFRun r : paragraph.getRuns()) {
             if(r instanceof XWPFFieldRun){
                 XWPFFieldRun xwpfFieldRun = (XWPFFieldRun) r;
 
                 CTSimpleField ctField = xwpfFieldRun.getCTField();
                 if(ctField.getInstr().contains(placeHolder)) {
-                    CTText ctText = ctField.addNewR().addNewT();
-                    ctText.setStringValue("<<fieldName>>");
-                    ctField.setFldData(ctText);
-
                     System.out.println("contains : " + ctField.getInstr() );
                 }
 
@@ -119,7 +99,7 @@ public class PoiDocxMerge {
             }
 
 
-        }*/
+        }
 
        /* for (XWPFRun r : paragraph.getRuns()) {
             String text = r.getText(r.getTextPosition());
